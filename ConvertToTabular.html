@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Convert JSON Data to HTML Table</title>
+    <style>
+        th, td, p, input {
+            font:14px Verdana;
+        }
+        table, th, td 
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <input type="button" onclick="CreateTableFromJSON()" value="Create Table From JSON" />
+    <p id="showData"></p>
+</body>
+
+<script>
+    function CreateTableFromJSON() {
+        var myBooks = [
+	{
+		"rt": 912.2600000118837,
+		"stimulus": "Welcome to the experiment. Press any key to begin.",
+		"key_press": 65,
+		"trial_type": "html-keyboard-response",
+		"trial_index": 0,
+		"time_elapsed": 919,
+		"internal_node_id": "0.0-0.0"
+	},
+	{
+		"rt": 423.94000000786036,
+		"stimulus": "<p>In this experiment, a face will appear in the center of the screen.</p><p>You must choose whether or not the fits the following emotion. </p>For the question, click either yes or no. <b>Yes</b> the face <b>does</b> fit the emotion. Or, <b>No</b> it <b> does not</b><p>Press any key to begin.</p>",
+		"key_press": 65,
+		"trial_type": "html-keyboard-response",
+		"trial_index": 1,
+		"time_elapsed": 1347,
+		"internal_node_id": "0.0-1.0"
+	},
+	{
+		"rt": null,
+		"stimulus": "<div style=\"font-size:60px;\">+</div>",
+		"key_press": null,
+		"test_part": "fixation",
+		"trial_type": "html-keyboard-response",
+		"trial_index": 2,
+		"time_elapsed": 2851,
+		"internal_node_id": "0.0-2.0-0.0"
+	},
+	{
+		"rt": 903.8849999778904,
+		"stimulus": "images/sad1.jpg",
+		"button_pressed": "0",
+		"test_part": "test",
+		"trial_type": "image-button-response",
+		"trial_index": 3,
+		"time_elapsed": 3759,
+		"internal_node_id": "0.0-2.0-1.0"
+	},
+	{
+		"rt": null,
+		"stimulus": "<div style=\"font-size:60px;\">+</div>",
+		"key_press": null,
+		"test_part": "fixation",
+		"trial_type": "html-keyboard-response",
+		"trial_index": 4,
+		"time_elapsed": 4263,
+		"internal_node_id": "0.0-2.0-0.1"
+	},
+	{
+		"rt": 407.9149999888614,
+		"stimulus": "images/sad2.webp",
+		"button_pressed": "0",
+		"test_part": "test",
+		"trial_type": "image-button-response",
+		"trial_index": 5,
+		"time_elapsed": 4672,
+		"internal_node_id": "0.0-2.0-1.1"
+	},
+	{
+		"rt": 2652.5649999966845,
+		"stimulus": "<p>You will now be deciding if this face is happy or not.</p>",
+		"key_press": 65,
+		"trial_type": "html-keyboard-response",
+		"trial_index": 6,
+		"time_elapsed": 7326,
+		"internal_node_id": "0.0-3.0"
+	},
+	{
+		"rt": null,
+		"stimulus": "<div style=\"font-size:60px;\">+</div>",
+		"key_press": null,
+		"test_part": "fixation",
+		"trial_type": "html-keyboard-response",
+		"trial_index": 7,
+		"time_elapsed": 8833,
+		"internal_node_id": "0.0-4.0-0.0"
+	},
+	{
+		"rt": 607.2799999965355,
+		"stimulus": "images/happy1.jpg",
+		"button_pressed": "0",
+		"test_part": "test",
+		"trial_type": "image-button-response",
+		"trial_index": 8,
+		"time_elapsed": 9442,
+		"internal_node_id": "0.0-4.0-1.0"
+	},
+	{
+		"rt": null,
+		"stimulus": "<div style=\"font-size:60px;\">+</div>",
+		"key_press": null,
+		"test_part": "fixation",
+		"trial_type": "html-keyboard-response",
+		"trial_index": 9,
+		"time_elapsed": 9948,
+		"internal_node_id": "0.0-4.0-0.1"
+	},
+	{
+		"rt": 512.8399999812245,
+		"stimulus": "images/happy2.jpg",
+		"button_pressed": "1",
+		"test_part": "test",
+		"trial_type": "image-button-response",
+		"trial_index": 10,
+		"time_elapsed": 10462,
+		"internal_node_id": "0.0-4.0-1.1"
+	},
+	{
+		"rt": 791.5849999990314,
+		"stimulus": "<p>Thank you for participating in our experiment!</p>",
+		"key_press": 83,
+		"trial_type": "html-keyboard-response",
+		"trial_index": 11,
+		"time_elapsed": 11255,
+		"internal_node_id": "0.0-5.0"
+	}
+]
+
+        // EXTRACT VALUE FOR HTML HEADER. 
+        // ('Book ID', 'Book Name', 'Category' and 'Price')
+        var col = [];
+        for (var i = 0; i < myBooks.length; i++) {
+            for (var key in myBooks[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+        var tr = table.insertRow(-1);                   // TABLE ROW.
+
+        for (var i = 0; i < col.length; i++) {
+            var th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < myBooks.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = myBooks[i][col[j]];
+            }
+        }
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+    }
+</script>
+</html>
